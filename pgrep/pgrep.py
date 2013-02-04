@@ -1,3 +1,4 @@
+#!/usr/bin/python
 '''
 Created on Feb 4, 2013
 
@@ -10,8 +11,6 @@ import os
 import threading
 import time
 import logging
-
-logger=''
 
 def main():
     get_opt()
@@ -34,13 +33,14 @@ def get_opt():
     opts['profile'] = True
     opts['pattern'] = ''
     
-    print(options)
+    logger.debug(options)
     for opt,arg in options:
-        print('opt='+opt+',arg='+arg)
+        logger.debug('opt='+opt+',arg='+arg)
         if opt in ('-t'):
             opts['thread_count'] = arg
         elif opt in ('-v'):
             opts['verbrose'] = True
+            logger.setLevel(logging.DEBUG)
         elif opt in ('-q'):
             opts['break_count'] = arg
         elif opt in ('-T'):
@@ -117,6 +117,8 @@ def usage():
 if __name__ == '__main__':
     global logger
     logger = logging.getLogger('pgrep')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.ERROR)
+    handler = logging.StreamHandler()
+    logger.addHandler(handler)
     main()
 
